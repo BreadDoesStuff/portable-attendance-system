@@ -26,7 +26,7 @@ public class memberData {
     // Paths to the CSV files
     static String csvInputPath = "memberInput.csv";
     static String csvOutputPath = "memberDataList.csv";
-    static String attendanceDataOutputPath = "Club Attendance - " + currentDate1 + " .csv";
+    static String attendanceDataOutputPath = "Attendance - " + currentDate1 + " .csv";
 
     public memberData()
     {
