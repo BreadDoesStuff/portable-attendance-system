@@ -1,4 +1,4 @@
-package com.breaddoessstuff;
+package com.breaddoesstuff;
 
 import java.awt.image.BufferedImage;
 
