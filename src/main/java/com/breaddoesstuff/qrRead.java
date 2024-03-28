@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import com.github.eduramiba.webcamcapture.drivers.NativeDriver;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamResolution;
+import com.github.sarxos.webcam.ds.buildin.WebcamDefaultDriver;
 import com.github.sarxos.webcam.util.jh.JHGrayFilter;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
@@ -24,10 +25,17 @@ public class qrRead {
 
         System.out.println("Getting ready to scan QR codes...");
 
-		// Set Webcam Driver (native)
-		Webcam.setDriver(new NativeDriver());
-        // Set Webcam Driver (broken)
-		//Webcam.setDriver(new WebcamDefaultDriver()());
+        // Super scuffed but it works ig
+        if (appProperties.isOnMacArm)
+        {
+            // Set Webcam Driver (native)
+            Webcam.setDriver(new NativeDriver());
+        }
+        else
+        {
+            // Set Webcam Driver (non-macarm)
+            Webcam.setDriver(new WebcamDefaultDriver());
+        }
 
         // Get list of available webcams
         Iterable<Webcam> webcams = Webcam.getWebcams();
@@ -51,7 +59,6 @@ public class qrRead {
             System.out.println("Camera is active!");
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -104,16 +111,13 @@ public class qrRead {
 			result = reader.decode(bitmap);
 			return result.getText();
 		} catch (NotFoundException e) {
-			// TODO Auto-generated catch block
 			//e.printStackTrace();
 			//System.out.println("Checking...");
 		} catch (ChecksumException e) {
-			// TODO Auto-generated catch block
 			System.out.println("Uhhh what..?");
 			//e.printStackTrace();
 		} catch (FormatException e) {
 			System.out.println("Funny looking QR code right there...");
-			// TODO Auto-generated catch block
 			//e.printStackTrace();
 		}
 

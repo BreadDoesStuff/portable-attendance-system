@@ -19,6 +19,7 @@ public class appProperties {
     public static boolean generateMemberData = false;
     public static boolean soundMuted = false;
     public static boolean debugMode = false;
+    public static boolean isOnMacArm = false;
 
     public appProperties()
     {
@@ -28,6 +29,8 @@ public class appProperties {
     // Check the config and change bool values accordingly.
     public static void checkConfig()
     {
+        // Check computer architecture/os
+        checkArch();
 
         System.out.println("Loading config file...");
 
@@ -52,11 +55,18 @@ public class appProperties {
             String key1 = properties.getProperty("memberGenerationMode");
             String key2 = properties.getProperty("muteSound");
             String key3 = properties.getProperty("debug");
+            String key4 = properties.getProperty("onMacArm");
 
             // Change program variables based on config
             generateMemberData = Boolean.parseBoolean(key1);
             soundMuted = Boolean.parseBoolean(key2);
             debugMode = Boolean.parseBoolean(key3);
+            
+            if (!key4.isBlank()) // Only parse when necessary
+            {
+                isOnMacArm = Boolean.parseBoolean(key4);
+            }
+            
             
             System.out.println("Config loaded sucessfully!");
 
@@ -67,7 +77,7 @@ public class appProperties {
     }
 
     // Generates a new config.
-    public static void genConfig()
+    private static void genConfig()
     {
         // Create/Copy new config
         try {
@@ -81,6 +91,8 @@ public class appProperties {
                 writer.write("muteAudio=" + soundMuted + "\n");
                 writer.write("# Change to true to enable debug mode.\n");
                 writer.write("debug=" + soundMuted + "\n");
+                writer.write("# LEAVE IT BLANK UNLESS YOU KNOW WHAT YOU'RE DOING!\n");
+                writer.write("onMacArm= \n");
 
                 // Close the writer
                 writer.close();
@@ -89,6 +101,22 @@ public class appProperties {
             } catch (IOException e) {
                 System.err.println("Error creating config file: " + e.getMessage());
             }
+    }
+
+    // Check computer OS and Arch
+    private static void checkArch()
+    {
+        String osName = System.getProperty("os.name");
+        String osArch = System.getProperty("os.arch");
+
+        if (osName.startsWith("Mac") && (osArch.equals("x86_64") || osArch.equals("aarch64"))) 
+        {
+            isOnMacArm = true;
+        }
+        else
+        {
+            isOnMacArm = false;
+        }
     }
 
 }

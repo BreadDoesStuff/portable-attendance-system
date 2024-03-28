@@ -44,10 +44,10 @@
       <version>1.10.0</version>
     </dependency>
     <dependency>
-	    <groupId>com.github.eduramiba.webcam-capture</groupId>
+	    <groupId>com.github.BreadDoesStuff.webcam-capture</groupId>
 	    <artifactId>webcam-capture</artifactId>
-	    <version>0fdb3fb</version>
-	  </dependency>
+	    <version>3d57279d7a</version>
+	</dependency>
     <dependency>
     <groupId>io.github.eduramiba</groupId>
     <artifactId>webcam-capture-driver-native</artifactId>

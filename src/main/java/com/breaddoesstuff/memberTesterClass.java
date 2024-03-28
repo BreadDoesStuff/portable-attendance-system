@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import com.github.eduramiba.webcamcapture.drivers.NativeDriver;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamResolution;
+import com.github.sarxos.webcam.ds.buildin.WebcamDefaultDriver;
 import com.github.sarxos.webcam.util.jh.JHGrayFilter;
 
 public class memberTesterClass {
@@ -23,11 +24,18 @@ public class memberTesterClass {
     public static void camTest()
     {
         
-        // Set Webcam Driver (native)
-		Webcam.setDriver(new NativeDriver());
-        // Set Webcam Driver (broken)
-		//Webcam.setDriver(new WebcamDefaultDriver()());
-
+        // Super scuffed but it works ig
+        if (appProperties.isOnMacArm)
+        {
+            // Set Webcam Driver (native)
+            Webcam.setDriver(new NativeDriver());
+        }
+        else
+        {
+            // Set Webcam Driver (non-macarm)
+            Webcam.setDriver(new WebcamDefaultDriver());
+        }
+        
         // Get list of available webcams
         Iterable<Webcam> webcams = Webcam.getWebcams();
 
