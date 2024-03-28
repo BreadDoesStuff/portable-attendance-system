@@ -26,7 +26,7 @@ public class qrRead {
         System.out.println("Getting ready to scan QR codes...");
 
         // Super scuffed but it works ig
-        if (appProperties.isOnMacArm)
+        if (appProperties.forceNativeDriver)
         {
             // Set Webcam Driver (native)
             Webcam.setDriver(new NativeDriver());

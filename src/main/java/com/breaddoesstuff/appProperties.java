@@ -19,7 +19,7 @@ public class appProperties {
     public static boolean generateMemberData = false;
     public static boolean soundMuted = false;
     public static boolean debugMode = false;
-    public static boolean isOnMacArm = false;
+    public static boolean forceNativeDriver = false;
 
     public appProperties()
     {
@@ -55,7 +55,7 @@ public class appProperties {
             String key1 = properties.getProperty("memberGenerationMode");
             String key2 = properties.getProperty("muteSound");
             String key3 = properties.getProperty("debug");
-            String key4 = properties.getProperty("onMacArm");
+            String key4 = properties.getProperty("forceNativeWebcam");
 
             // Change program variables based on config
             generateMemberData = Boolean.parseBoolean(key1);
@@ -64,7 +64,7 @@ public class appProperties {
             
             if (!key4.isBlank()) // Only parse when necessary
             {
-                isOnMacArm = Boolean.parseBoolean(key4);
+                forceNativeDriver = Boolean.parseBoolean(key4);
             }
             
             
@@ -92,7 +92,7 @@ public class appProperties {
                 writer.write("# Change to true to enable debug mode.\n");
                 writer.write("debug=" + soundMuted + "\n");
                 writer.write("# LEAVE IT BLANK UNLESS YOU KNOW WHAT YOU'RE DOING!\n");
-                writer.write("onMacArm= \n");
+                writer.write("forceNativeWebcam=\n");
 
                 // Close the writer
                 writer.close();
@@ -107,15 +107,18 @@ public class appProperties {
     private static void checkArch()
     {
         String osName = System.getProperty("os.name");
-        String osArch = System.getProperty("os.arch");
 
-        if (osName.startsWith("Mac") && (osArch.equals("x86_64") || osArch.equals("aarch64"))) 
+        // Force native driver if on Mac
+        if (osName.startsWith("Mac")) 
         {
-            isOnMacArm = true;
+            System.out.println("Using Native Webcam Driver!");
+            forceNativeDriver = true;
         }
         else
         {
-            isOnMacArm = false;
+            // "For the inferior Windows and Linux users" - Said every Apple Sheep ever
+            System.out.println("Using Regular Webcam Driver!");
+            forceNativeDriver = false;
         }
     }
 

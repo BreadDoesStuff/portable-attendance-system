@@ -25,7 +25,7 @@ public class memberTesterClass {
     {
         
         // Super scuffed but it works ig
-        if (appProperties.isOnMacArm)
+        if (appProperties.forceNativeDriver)
         {
             // Set Webcam Driver (native)
             Webcam.setDriver(new NativeDriver());
@@ -35,7 +35,7 @@ public class memberTesterClass {
             // Set Webcam Driver (non-macarm)
             Webcam.setDriver(new WebcamDefaultDriver());
         }
-        
+
         // Get list of available webcams
         Iterable<Webcam> webcams = Webcam.getWebcams();
 
