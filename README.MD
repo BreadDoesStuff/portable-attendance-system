@@ -17,4 +17,4 @@ I made this to be able to easily track the attendance of a user by outputting th
 5. Run the program again setting `memberGenerationMode` to false and the camera should initate. Simply scan one of the generated QR codes and a new `Attendance.csv` file should be created with the local date included in the name.
 
 ## Known Issues
-* **Does not work on any operating system other than macOS.** Could be resolved by using a better camera driver than the forked webcam-capture.
+* **Might not work on any operating system other than macOS.** Could be resolved by using a better camera driver.
