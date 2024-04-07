@@ -48,8 +48,8 @@ public class memberTesterClass {
         // Print list of Camera Devices
         System.out.println("\n" + Webcam.getWebcams());
 
-        // Get default webcam
-        Webcam webcam = Webcam.getDefault();
+        // Get default webcam/Selected Webcam
+        Webcam webcam = Webcam.getWebcams().get(appProperties.webcamSelectionIndex);
         webcam.setViewSize(WebcamResolution.VGA.getSize());
 
         // Open webcam, wait, then capture image

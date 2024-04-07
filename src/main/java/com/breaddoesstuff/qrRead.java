@@ -46,8 +46,11 @@ public class qrRead {
             return;
         }
 
+        // Print list of Camera Devices
+        System.out.println("\n" + Webcam.getWebcams());
+
 		// Set the Webcam itself
-        Webcam webcam = Webcam.getDefault();
+        Webcam webcam = Webcam.getWebcams().get(appProperties.webcamSelectionIndex);
         webcam.setViewSize(WebcamResolution.VGA.getSize());
 
 		// Use the webcam

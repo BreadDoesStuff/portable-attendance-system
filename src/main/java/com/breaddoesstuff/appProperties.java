@@ -20,6 +20,7 @@ public class appProperties {
     public static boolean soundMuted = false;
     public static boolean debugMode = false;
     public static boolean forceNativeDriver = false;
+    public static int webcamSelectionIndex = 0;
 
     public appProperties()
     {
@@ -56,6 +57,7 @@ public class appProperties {
             String key2 = properties.getProperty("muteSound");
             String key3 = properties.getProperty("debug");
             String key4 = properties.getProperty("forceNativeWebcam");
+            String key5 = properties.getProperty("webcamSelectionIndex");
 
             // Change program variables based on config
             generateMemberData = Boolean.parseBoolean(key1);
@@ -65,6 +67,11 @@ public class appProperties {
             if (!key4.isBlank()) // Only parse when necessary
             {
                 forceNativeDriver = Boolean.parseBoolean(key4);
+            }
+
+            if (!key5.isBlank()) // Only parse when necessary
+            {
+                webcamSelectionIndex = Integer.parseInt(key5);
             }
             
             
@@ -91,8 +98,9 @@ public class appProperties {
                 writer.write("muteAudio=" + soundMuted + "\n");
                 writer.write("# Change to true to enable debug mode.\n");
                 writer.write("debug=" + soundMuted + "\n");
-                writer.write("# LEAVE IT BLANK UNLESS YOU KNOW WHAT YOU'RE DOING!\n");
+                writer.write("# LEAVE THESE BLANK UNLESS YOU KNOW WHAT YOU'RE DOING!\n");
                 writer.write("forceNativeWebcam=\n");
+                writer.write("webcamSelectionIndex=\n");
 
                 // Close the writer
                 writer.close();
