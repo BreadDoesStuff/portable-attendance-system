@@ -24,9 +24,9 @@ public class memberData {
     static Date currentDate2 = new Date(); // Complex date w/ time
 
     // Paths to the CSV files
-    static String csvInputPath = "memberInput.csv";
-    static String csvOutputPath = "memberDataList.csv";
-    static String attendanceDataOutputPath = "Attendance - " + currentDate1 + " .csv";
+    static final String CSV_INPUT_PATH = "memberInput.csv";
+    static final String CSV_OUTPUT_PATH = "memberDataList.csv";
+    static final String ATTENDANCE_DATA_OUTPUT_PATH = "Attendance - " + currentDate1 + " .csv";
 
     public memberData()
     {
@@ -99,14 +99,14 @@ public class memberData {
 
         try {
             // Check if the file already exists
-            if (!Files.exists(Paths.get(csvOutputPath)))
+            if (!Files.exists(Paths.get(CSV_OUTPUT_PATH)))
             {
                 System.out.println("Cannot append to memberDataList.csv if it doesn't exist!");
                 return;
             }
 
             // Create a FileWriter object
-            FileWriter fileWriter = new FileWriter(csvOutputPath, true);
+            FileWriter fileWriter = new FileWriter(CSV_OUTPUT_PATH, true);
 
             // Create a CSVPrinter object
             CSVPrinter csvPrinter = new CSVPrinter(fileWriter, CSVFormat.DEFAULT);
@@ -115,7 +115,9 @@ public class memberData {
 
             System.out.println("Attemping to append new member...");
 
-            csvPrinter.printRecord(tempID, clearFunnies(email));
+            String noFunnyEmail = clearFunnies(email);
+
+            csvPrinter.printRecord(tempID, noFunnyEmail);
 
             // Flush and close the CSVPrinter
             csvPrinter.flush();
@@ -124,7 +126,7 @@ public class memberData {
             System.out.println("Appended new member sucessfully!");
             System.out.println("Generating QR Code...");
 
-            qrGen.create(tempID, clearFunnies(email));
+            qrGen.create(tempID, noFunnyEmail);
 
             System.out.println("All Done!");
         }
@@ -151,14 +153,14 @@ public class memberData {
 
         try {
             // Check if input csv file exists before reading
-            if (!Files.exists(Paths.get(csvInputPath))) 
+            if (!Files.exists(Paths.get(CSV_INPUT_PATH))) 
            {
                 System.out.println("memberInput.csv not found! Ensure it is in the same directory as the jar file.");
                 System.exit(0);;
            }
 
             // Create a reader for the CSV file
-            Reader reader = new FileReader(csvInputPath);
+            Reader reader = new FileReader(CSV_INPUT_PATH);
 
             // Parse the CSV file using Commons CSV
             CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);
@@ -185,14 +187,14 @@ public class memberData {
 
          try {
             // Check if the file already exists
-           if (Files.exists(Paths.get(csvOutputPath))) 
+           if (Files.exists(Paths.get(CSV_OUTPUT_PATH))) 
            {
                 System.out.println("Cannot create new memberDataList! File already exists!");
                 return;
             }
 
             // Create a FileWriter object
-            FileWriter fileWriter = new FileWriter(csvOutputPath);
+            FileWriter fileWriter = new FileWriter(CSV_OUTPUT_PATH);
 
             // Create a CSVPrinter object
             CSVPrinter csvPrinter = new CSVPrinter(fileWriter, CSVFormat.DEFAULT);
@@ -235,14 +237,14 @@ public class memberData {
 
         try {
             // Check if memberDataList file exists before reading
-            if (!Files.exists(Paths.get(csvOutputPath))) 
+            if (!Files.exists(Paths.get(CSV_OUTPUT_PATH))) 
            {
                 System.out.println("memberDataList.csv not found! Ensure it is in the same directory as the jar file.");
                 System.exit(0);;
            }
 
             // Create a reader for the CSV file
-            Reader reader = new FileReader(csvOutputPath);
+            Reader reader = new FileReader(CSV_OUTPUT_PATH);
 
             // Parse the CSV file using Commons CSV
             CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);
@@ -276,7 +278,7 @@ public class memberData {
         try {
 
             // Create a FileWriter object
-            FileWriter fileWriter = new FileWriter(attendanceDataOutputPath, true);
+            FileWriter fileWriter = new FileWriter(ATTENDANCE_DATA_OUTPUT_PATH, true);
 
             // Create a CSVPrinter object
             CSVPrinter csvPrinter = new CSVPrinter(fileWriter, CSVFormat.DEFAULT);
@@ -398,7 +400,7 @@ public class memberData {
         {
             return email;
         }
-
+        
         // Find the index of '@'
         int atIndex = email.indexOf('@');
         

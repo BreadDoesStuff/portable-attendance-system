@@ -23,6 +23,8 @@ public class qrRead {
 
 	public static void read() {
 
+        final int IMAGE_CAPTURE_DELAY = 35; // in ms
+
         System.out.println("Getting ready to scan QR codes...");
 
         // Super scuffed but it works ig
@@ -58,7 +60,7 @@ public class qrRead {
 		webcam.open();
 
 		try {
-			// Wait a bit before grabbing images
+			// Wait a bit before activating camera to make sure it is initialized
             System.out.println("Camera is active!");
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
@@ -67,7 +69,8 @@ public class qrRead {
 
         System.out.println("Awaiting QR Codes...");
 
-        // Constantly grabbing camera image and decoding any QR codes (if present)
+        // Constantly capturing camera image and decoding any QR codes (if present)
+        // Main Scan Loop
         while (true) {
             if (webcam.isOpen()) {
                 try {
@@ -76,12 +79,12 @@ public class qrRead {
                     BufferedImage grayImage = convertToGrayScale(image);
 
                     // Get QR code result from image
-                    String result = decodeQRCode(grayImage);
+                    String scannedCode = decodeQRCode(grayImage);
 
                     // Make sure QR Code values are 36 characters long
-                    if (result != null && result.length() > 35 && result.length() < 37) 
+                    if (scannedCode != null && scannedCode.length() == 36) 
                     { 
-                        memberData.setPresent(result, true);
+                        memberData.setPresent(scannedCode, true);
                         //System.out.println(result);
                     }
                 } catch (Exception e) {
@@ -90,7 +93,7 @@ public class qrRead {
             }
             try {
                 // Delay between each iteration so the computer doesn't explode
-                Thread.sleep(35);
+                Thread.sleep(IMAGE_CAPTURE_DELAY);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -107,12 +110,12 @@ public class qrRead {
         BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
 
         Reader reader = new MultiFormatReader();
-        Result result;
+        Result decoded;
 		
 		// Try-catchificationathon
 		try {
-			result = reader.decode(bitmap);
-			return result.getText();
+			decoded = reader.decode(bitmap);
+			return decoded.getText();
 		} catch (NotFoundException e) {
 			//e.printStackTrace();
 			//System.out.println("Checking...");
