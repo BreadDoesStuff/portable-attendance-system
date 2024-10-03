@@ -71,6 +71,10 @@ public class qrRead {
 
         // Constantly capturing camera image and decoding any QR codes (if present)
         // Main Scan Loop
+
+        boolean alreadyScanned = false;
+        String previousScannedCode = "";
+
         while (true) {
             if (webcam.isOpen()) {
                 try {
@@ -81,11 +85,28 @@ public class qrRead {
                     // Get QR code result from image
                     String scannedCode = decodeQRCode(grayImage);
 
-                    // Make sure QR Code values are 36 characters long
-                    if (scannedCode != null && scannedCode.length() == 36) 
+                    // Make sure scanned QR Code is acceptable for the system
+                    if (scannedCode.length() == 36) 
                     { 
-                        memberData.setPresent(scannedCode, true);
-                        //System.out.println(result);
+                        // Case to check if QR Code has already been scanned
+                        if (previousScannedCode.equals(scannedCode))
+                        {
+                            alreadyScanned = true;
+                        }
+                        else // Different code, reset scan bool
+                        {
+                            alreadyScanned = false;
+                        }
+                        
+                        // Prevent "already present" spam
+                        if (!alreadyScanned)
+                        {
+                            memberData.setPresent(scannedCode, true);
+                            //System.out.println(result);
+                        }
+
+                        // Freeze current code in placeholder variable
+                        previousScannedCode = scannedCode;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -127,7 +148,8 @@ public class qrRead {
 			//e.printStackTrace();
 		}
 
-        return "If you're seeing this then something has gone horribly wrong!";
+        // Return this when no codes are scanned
+        return "";
     }
 
 }
